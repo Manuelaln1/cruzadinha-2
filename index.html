@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Cruzadinha Amazônica</title>
+  </head>
+  <body>
+    <!-- Folhas decorativas -->
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+
+    <div class="container">
+      <div class="header">
+        <img src="image.png" alt="" style="width: 200px" />
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number" id="correctCount">0</div>
+          <div class="stat-label">Corretas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="totalWords">18</div>
+          <div class="stat-label">Palavras</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="progressPercent">0%</div>
+          <div class="stat-label">Progresso</div>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="game-area">
+        <div class="crossword-container">
+          <div class="crossword-grid" id="crosswordGrid"></div>
+          <div class="controls">
+            <button class="btn btn-primary" onclick="checkAnswers()">
+              ✓ Verificar
+            </button>
+            <button class="btn btn-secondary" onclick="clearGrid()">
+              🗑️ Limpar
+            </button>
+            <button class="btn btn-hint" onclick="showHint()">💡 Dica</button>
+          </div>
+        </div>
+
+        <div class="clues-container">
+          <h3 class="clues-title">🔍 Dicas da Floresta</h3>
+          <div id="cluesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'98451386d671a469',t:'MTc1ODc0NjIxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
