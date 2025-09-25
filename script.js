@@ -1,153 +1,171 @@
 const words = [
   {
-    word: "SEGURANCA",
-    clue: "Proteção contra perigos.",
+    word: "SEGURANÇA",
+    clue: "1. Proteção contra perigos.",
     direction: "down",
     start: { x: 3, y: 1 },
   },
   {
     word: "DESMATAMENTO",
-    clue: "Remoção da vegetação nativa em grande escala.",
+    clue: "2. Remoção da vegetação nativa em grande escala.",
     direction: "across",
     start: { x: 2, y: 2 },
   },
   {
     word: "GD",
-    clue: "Super-herói.",
+    clue: "3. Super-herói.",
     direction: "across",
     start: { x: 3, y: 3 },
   },
   {
     word: "ASSOREAMENTO",
-    clue: "Terra que entope rios.",
+    clue: "4. Terra que entope rios.",
     direction: "across",
-    start: { x: 3, y: 10 },
+    start: { x: 3, y: 9 },
   },
   {
     word: "AGUA",
-    clue: "Fórmula H₂O.",
+    clue: "5. Fórmula H₂O.",
     direction: "across",
-    start: { x: 6, y: 6 },
+    start: { x: 6, y: 5 },
   },
   {
     word: "AMAZONIA",
-    clue: "Maior floresta tropical do mundo.",
+    clue: "6. Maior floresta tropical do mundo.",
     direction: "down",
-    start: { x: 6, y: 6 },
+    start: { x: 6, y: 5 },
   },
   {
     word: "NATUREZA",
-    clue: "Mundo natural.",
+    clue: "7. Mundo natural.",
     direction: "across",
-    start: { x: 5, y: 7 },
+    start: { x: 5, y: 12 },
   },
   {
     word: "TROPICAL",
-    clue: "Clima quente e úmido.",
+    clue: "8. Clima quente e úmido.",
     direction: "across",
-    start: { x: 10, y: 8 },
+    start: { x: 10, y: 7 },
   },
   {
-    word: "LIXOELETRONICO",
-    clue: "Aparelhos descartados.",
+    word: "LIXOELETRÔNICO",
+    clue: "9. Aparelhos descartados.",
     direction: "down",
-    start: { x: 14, y: 7 },
+    start: { x: 14, y: 6 },
   },
   {
     word: "TOXICOS",
-    clue: "Substâncias perigosas.",
+    clue: "10. Substâncias perigosas.",
     direction: "down",
-    start: { x: 4, y: 20 },
+    start: { x: 4, y: 18 },
   },
   {
-    word: "CONTAMINACAO",
-    clue: "Poluição no ar, água ou solo.",
+    word: "CONTAMINAÇÃO",
+    clue: "11. Poluição no ar, água ou solo.",
     direction: "across",
-    start: { x: 3, y: 21 },
+    start: { x: 3, y: 19 },
   },
   {
-    word: "GUARDIOES",
-    clue: "Protetores da floresta.",
+    word: "GUARDIÕES",
+    clue: "12. Protetores da floresta.",
     direction: "down",
-    start: { x: 7, y: 19 },
+    start: { x: 7, y: 17 },
   },
   {
     word: "RECICLAGEM",
-    clue: "Reuso de materiais.",
+    clue: "13. Reuso de materiais.",
     direction: "across",
-    start: { x: 6, y: 26 },
+    start: { x: 6, y: 24 },
   },
   {
-    word: "VILA",
-    clue: "Personagem má.",
+    word: "VILÃ",
+    clue: "14. Personagem má.",
     direction: "down",
-    start: { x: 9, y: 20 },
+    start: { x: 9, y: 18 },
   },
   {
     word: "LILA",
-    clue: "Personagem feminina.",
+    clue: "15. Personagem feminina.",
     direction: "across",
-    start: { x: 13, y: 11 },
+    start: { x: 13, y: 17 },
   },
   {
     word: "MAX",
-    clue: "Personagem masculino.",
+    clue: "16. Personagem masculino.",
     direction: "down",
     start: { x: 16, y: 16 },
   },
   {
-    word: "TRADICOES",
-    clue: "Costumes antigos.",
+    word: "TRADIÇÕES",
+    clue: "17. Costumes antigos.",
     direction: "down",
-    start: { x: 17, y: 1 },
+    start: { x: 18, y: 13 },
   },
   {
     word: "DIGITAIS",
-    clue: "Relacionado às impressões dos dedos ou ao ambiente virtual.",
+    clue: "18. Relacionado às impressões dos dedos ou ao ambiente virtual.",
     direction: "across",
-    start: { x: 1, y: 18 },
+    start: { x: 11, y: 21 },
+  },
+  {
+    word: "IA",
+    clue: "19. Inteligência Artificial.",
+    direction: "down",
+    start: { x: 14, y: 21 },
   },
 ];
 
 let grid = [];
 let currentWord = null;
 let correctWords = new Set();
+const maxRows = 30;
+const maxCols = 20;
 
 function initializeGrid() {
   const gridElement = document.getElementById("crosswordGrid");
   gridElement.innerHTML = "";
 
   // Initialize empty grid
-  for (let y = 0; y < 30; y++) {
+  for (let y = 0; y < maxRows; y++) {
     grid[y] = [];
-    for (let x = 0; x < 20; x++) {
+    for (let x = 0; x < maxCols; x++) {
       grid[y][x] = { letter: "", isBlack: true, wordIds: [], number: null };
     }
   }
 
-  // Place words in grid
+  // Place words and numbers in grid
   words.forEach((wordData, index) => {
     const { word, direction, start } = wordData;
+    const number = index + 1;
+
+    const numberX = direction === "across" ? start.x - 1 : start.x;
+    const numberY = direction === "down" ? start.y - 1 : start.y;
+    if (numberX >= 0 && numberY >= 0) {
+      grid[numberY][numberX].number = number;
+    }
+
     for (let i = 0; i < word.length; i++) {
       const x = direction === "across" ? start.x + i : start.x;
       const y = direction === "down" ? start.y + i : start.y;
 
-      if (x < 20 && y < 30) {
+      if (x < maxCols && y < maxRows) {
+        if (!grid[y][x].isBlack) {
+          if (grid[y][x].letter !== word[i]) {
+            console.error(
+              `Intersection conflict at (${x}, ${y}) for word "${word}"`
+            );
+          }
+        }
         grid[y][x].letter = word[i];
         grid[y][x].isBlack = false;
         grid[y][x].wordIds.push(index);
-
-        // Add number for first letter
-        if (i === 0) {
-          grid[y][x].number = index + 1;
-        }
       }
     }
   });
 
   // Create DOM elements
-  for (let y = 0; y < 30; y++) {
-    for (let x = 0; x < 20; x++) {
+  for (let y = 0; y < maxRows; y++) {
+    for (let x = 0; x < maxCols; x++) {
       const cell = document.createElement("div");
       cell.className = "cell";
       cell.dataset.x = x;
@@ -161,16 +179,18 @@ function initializeGrid() {
         input.maxLength = 1;
         input.addEventListener("input", handleInput);
         input.addEventListener("keydown", handleKeyDown);
-        input.addEventListener("focus", () => highlightWord(x, y));
+        input.addEventListener("focus", () => {
+          highlightWord(x, y);
+        });
         input.addEventListener("touchstart", () => highlightWord(x, y));
         cell.appendChild(input);
+      }
 
-        if (grid[y][x].number) {
-          const numberSpan = document.createElement("span");
-          numberSpan.className = "cell-number";
-          numberSpan.textContent = grid[y][x].number;
-          cell.appendChild(numberSpan);
-        }
+      if (grid[y][x].number) {
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "cell-number";
+        numberSpan.textContent = grid[y][x].number;
+        cell.appendChild(numberSpan);
       }
 
       gridElement.appendChild(cell);
@@ -204,7 +224,6 @@ function handleInput(event) {
 
   input.value = input.value.toUpperCase();
 
-  // Move to next cell
   if (input.value && currentWord !== null) {
     moveToNextCell(x, y);
   }
@@ -217,6 +236,12 @@ function handleKeyDown(event) {
   const cell = input.parentElement;
   const x = parseInt(cell.dataset.x);
   const y = parseInt(cell.dataset.y);
+
+  if (
+    ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(event.key)
+  ) {
+    event.preventDefault();
+  }
 
   if (event.key === "Backspace" && !input.value) {
     moveToPreviousCell(x, y);
@@ -245,7 +270,7 @@ function moveToNextCell(x, y, forceDown = false) {
   if (nextCell && !nextCell.classList.contains("black")) {
     const nextInput = nextCell.querySelector("input");
     if (nextInput) {
-      nextInput.focus();
+      nextInput.focus({ preventScroll: true });
     }
   }
 }
@@ -264,13 +289,12 @@ function moveToPreviousCell(x, y, forceUp = false) {
   if (prevCell && !prevCell.classList.contains("black")) {
     const prevInput = prevCell.querySelector("input");
     if (prevInput) {
-      prevInput.focus();
+      prevInput.focus({ preventScroll: true });
     }
   }
 }
 
 function highlightWord(x, y) {
-  // Clear previous highlights
   document.querySelectorAll(".cell.active").forEach((cell) => {
     cell.classList.remove("active");
   });
@@ -278,7 +302,6 @@ function highlightWord(x, y) {
     item.classList.remove("active");
   });
 
-  // Find word at this position
   const wordIds = grid[y][x].wordIds;
   if (wordIds.length > 0) {
     currentWord = wordIds[0];
@@ -287,7 +310,6 @@ function highlightWord(x, y) {
 }
 
 function highlightWordByIndex(wordIndex) {
-  // Clear previous highlights
   document.querySelectorAll(".cell.active").forEach((cell) => {
     cell.classList.remove("active");
   });
@@ -298,7 +320,6 @@ function highlightWordByIndex(wordIndex) {
   currentWord = wordIndex;
   const wordData = words[wordIndex];
 
-  // Highlight word cells
   for (let i = 0; i < wordData.word.length; i++) {
     const x =
       wordData.direction === "across" ? wordData.start.x + i : wordData.start.x;
@@ -311,7 +332,6 @@ function highlightWordByIndex(wordIndex) {
     }
   }
 
-  // Highlight clue
   const clueItems = document.querySelectorAll(".clue-item");
   if (clueItems[wordIndex]) {
     clueItems[wordIndex].classList.add("active");
@@ -365,12 +385,10 @@ function checkAnswers() {
   updateProgress();
 
   if (correctWords.size === words.length) {
-    setTimeout(() => {
-      alert(
-        "🎉 Parabéns, Guardião da Amazônia! Você completou toda a cruzadinha! 🌳🦋"
-      );
-      document.querySelector(".container").classList.add("celebration");
-    }, 500);
+    showModal(
+      "🎉 Parabéns, Guardião da Amazônia! Você completou toda a cruzadinha! 🌳🦋"
+    );
+    document.querySelector(".container").classList.add("celebration");
   }
 }
 
@@ -411,12 +429,10 @@ function showHint() {
         }, 2000);
       }
     } else {
-      alert("Esta palavra já está completa! 🌟");
+      showModal("Esta palavra já está completa! 🌟");
     }
   } else {
-    alert(
-      "Toque em uma célula ou dica primeiro para selecionar uma palavra! 🌿"
-    );
+    showModal("Toque em uma célula ou dica para selecionar uma palavra! 🌿");
   }
 }
 
@@ -447,6 +463,18 @@ function updateProgress() {
   document.getElementById("progressFill").style.width = percentage + "%";
 }
 
+function showModal(message) {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <p>${message}</p>
+      <button onclick="this.parentElement.parentElement.remove()">Fechar</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
 // Initialize the game
 initializeGrid();
 
@@ -463,3 +491,25 @@ document.addEventListener(
   },
   false
 );
+
+// Adiciona uma pequena função para impedir que a tela role ao focar no input.
+// Isso melhora a experiência em dispositivos móveis.
+document.addEventListener("focusin", (event) => {
+  if (event.target.tagName === "INPUT") {
+    // Adicione a classe 'active-input' ao input focado para aplicar estilos específicos se necessário
+    event.target.classList.add("active-input");
+    // previne o scroll automático do navegador
+    event.target.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  }
+});
+
+// Remove a classe do input quando ele perde o foco
+document.addEventListener("focusout", (event) => {
+  if (event.target.tagName === "INPUT") {
+    event.target.classList.remove("active-input");
+  }
+});
